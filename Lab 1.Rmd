@@ -1,0 +1,112 @@
+---
+title: "Lab 1 - Resampling"
+date: "April 8, 2020"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    dev: png
+  pdf_document:
+    dev: cairo_pdf
+    latex_engine: xelatex
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(rio)
+library(here)
+library(tidyverse)
+library(tidymodels)
+library(ggthemes)
+library(Cairo)
+library(tinytex)
+
+theme_set(theme_minimal())
+
+# Reading in the data
+train <- read_csv(here::here("train.csv")) %>% 
+  as_tibble()
+```
+
+# 1. Initial Split
+
+Split the data into a training set and a testing set as two named objects. Produce the class type for the initial split object and the training and test sets.
+
+```{rinitial split}
+
+
+```
+
+# 2. Proportion
+
+Use code to show the proportion of the train.csv data that went to each of the training and test sets.
+
+```{r proportion}
+
+
+```
+
+# 3. k-fold cross-validation
+
+Use 10-fold cross-validation to resample the traning data.
+
+```{r kfold}
+
+
+```
+
+# 4. Use {purrr} to add the following columns to your k-fold CV object:
+analysis_n = the n of the analysis set for each fold
+assessment_n = the n of the assessment set for each fold
+analysis_p = the proportion of the analysis set for each fold
+assessment_p = the proportion of the assessment set for each fold
+sped_p = the proportion of students receiving special education services (sp_ed_fg) for each fold
+
+```{r purrr}
+
+```
+
+# 5. No common values in k-folds
+
+Please demonstrate that that there are no common values in the id column between Fold01 & Fold02, and Fold09 & Fold10 in your 10-fold cross-validation object.
+
+```{r no common values}
+
+
+```
+
+# 6. Try to answer these next questions without running similar code on real data.
+
+For the following code vfold_cv(fictional_train, v = 20):
+
+What is the proportion in the analysis set for each fold?
+What is the proportion in the assessment set for each fold?
+
+# 7.Monte Carlo
+
+Use Monte Carlo CV to resample the training data with 20 resamples and .30 of each resample reserved for the assessment sets.
+
+```{r monte carlo}
+
+```
+
+# 8. Common values after monte carlo
+
+Please demonstrate that that there are common values in the id column between Resample 8 & Resample 12, and Resample 2 & Resample 20in your MC CV object.
+
+```{r common values}
+
+```
+
+# 9. Bootstrap
+
+You plan on doing bootstrap resampling with a training set with n = 500.
+What is the sample size of an analysis set for a given bootstrap resample?
+What is the sample size of an assessment set for a given bootstrap resample?
+
+If each row was selected only once for an analysis set:
+what would be the size of the analysis set?
+and what would be the size of the assessment set?
