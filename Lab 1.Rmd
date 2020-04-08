@@ -70,6 +70,14 @@ Use 10-fold cross-validation to resample the traning data.
 
 ```{r kfold}
 
+train_kfold <- vfold_cv(df_train)
+
+train_kfold
+
+train_kfold$splits[[1]] %>%
+  assessment()
+
+
 
 ```
 
@@ -81,15 +89,28 @@ assessment_p = the proportion of the assessment set for each fold
 sped_p = the proportion of students receiving special education services (sp_ed_fg) for each fold
 
 ```{r purrr}
+train_kfold %>%
+  mutate(analysis = map(splits, analysis), 
+         analysis_n = map_dbl(analysis, nrow), 
+         assessment = map(splits, assessment),
+         assessment_n = map_dbl(assessment, nrow),
+         analysis_p = analysis_n/(analysis_n + assessment_n),
+         assessment_p = assessment_n/(analysis_n + assessment_n),
+         sped_p = map2_dbl(analysis, analysis_n, ~sum(.x$sp_ed_fg == "Y", na.rm = TRUE)/.y))
+
+str(train_kfold)
+
+
 
 ```
 
 # 5. No common values in k-folds
 
-Please demonstrate that that there are no common values in the id column between Fold01 & Fold02, and Fold09 & Fold10 in your 10-fold cross-validation object.
+Please demonstrate that that there are no common values in the id column between Fold01 & Fold02, and Fold09 & Fold10 in your 10-fold cross-validation object.(in the Assessment data)
 
 ```{r no common values}
-
+#setdiff()
+#typeunique
 
 ```
 
@@ -98,7 +119,14 @@ Please demonstrate that that there are no common values in the id column between
 For the following code vfold_cv(fictional_train, v = 20):
 
 What is the proportion in the analysis set for each fold?
+
+1/20 = 5%
 What is the proportion in the assessment set for each fold?
+
+
+```{r}
+
+```
 
 # 7.Monte Carlo
 
@@ -110,7 +138,7 @@ Use Monte Carlo CV to resample the training data with 20 resamples and .30 of ea
 
 # 8. Common values after monte carlo
 
-Please demonstrate that that there are common values in the id column between Resample 8 & Resample 12, and Resample 2 & Resample 20in your MC CV object.
+Please demonstrate that that there are common values in the id column between Resample 8 & Resample 12, and Resample 2 & Resample 20in your MC CV object.(in the assesment sets)
 
 ```{r common values}
 
