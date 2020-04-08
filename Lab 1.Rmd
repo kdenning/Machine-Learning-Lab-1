@@ -28,16 +28,25 @@ library(tinytex)
 theme_set(theme_minimal())
 
 # Reading in the data
-train <- read_csv(here::here("train.csv")) %>% 
+df <- read_csv(here::here("train.csv")) %>% 
   as_tibble()
 ```
 
 # 1. Initial Split
 
-Split the data into a training set and a testing set as two named objects. Produce the class type for the initial split object and the training and test sets.
+Split the data into a training set and a testing set as two named objects. 
+Produce the class type for the initial split object and the training and test sets.
 
-```{rinitial split}
+```{r initial split}
 
+df_split <- initial_split(df)
+str(df_split)
+  
+df_train <- training(df_split)
+str(df_train)
+
+df_test <- testing(df_split)
+str(df_test)
 
 ```
 
@@ -46,8 +55,13 @@ Split the data into a training set and a testing set as two named objects. Produ
 Use code to show the proportion of the train.csv data that went to each of the training and test sets.
 
 ```{r proportion}
+df_train %>%
+  nrow() / nrow(df)
+#75% in training set
 
-
+df_test %>%
+  nrow() / nrow(df)
+#25% in test df 
 ```
 
 # 3. k-fold cross-validation
