@@ -89,7 +89,7 @@ assessment_p = the proportion of the assessment set for each fold
 sped_p = the proportion of students receiving special education services (sp_ed_fg) for each fold
 
 ```{r purrr}
-train_kfold %>%
+kfold_commonvalues <- train_kfold %>%
   mutate(analysis = map(splits, analysis), 
          analysis_n = map_dbl(analysis, nrow), 
          assessment = map(splits, assessment),
@@ -98,7 +98,7 @@ train_kfold %>%
          assessment_p = assessment_n/(analysis_n + assessment_n),
          sped_p = map2_dbl(analysis, analysis_n, ~sum(.x$sp_ed_fg == "Y", na.rm = TRUE)/.y))
 
-str(train_kfold)
+
 
 
 
@@ -111,6 +111,20 @@ Please demonstrate that that there are no common values in the id column between
 ```{r no common values}
 #setdiff()
 #typeunique
+
+kfold_assess <- kfold_commonvalues %>% 
+  select(assessment)
+
+dif_12 <- setdiff(kfold_assess$assessment$`1`[1],kfold_assess$assessment$`2`[1])
+
+# length in dif_12 and in assessment_n are equal, meaning that they ar eall different 
+
+dif_910 <- setdiff(kfold_assess$assessment$`9`[1],kfold_assess$assessment$`10`[1])
+
+# same for 9 and 10 
+
+
+
 
 ```
 
