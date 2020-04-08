@@ -1,5 +1,6 @@
 ---
 title: "Lab 1 - Resampling"
+author: "Katie Denning, Tamara Niella, & Karlena Ochoa"
 date: "April 8, 2020"
 output: 
   html_document:
