@@ -97,11 +97,7 @@ kfold_commonvalues <- train_kfold %>%
          analysis_p = analysis_n/(analysis_n + assessment_n),
          assessment_p = assessment_n/(analysis_n + assessment_n),
          sped_p = map2_dbl(analysis, analysis_n, ~sum(.x$sp_ed_fg == "Y", na.rm = TRUE)/.y))
-
-
-
-
-
+kfold_commonvalues
 ```
 
 # 5. No common values in k-folds
@@ -116,16 +112,14 @@ kfold_assess <- kfold_commonvalues %>%
   select(assessment)
 
 dif_12 <- setdiff(kfold_assess$assessment$`1`[1],kfold_assess$assessment$`2`[1])
+dif_12
 
 # length in dif_12 and in assessment_n are equal, meaning that they ar eall different 
 
 dif_910 <- setdiff(kfold_assess$assessment$`9`[1],kfold_assess$assessment$`10`[1])
+dif_910
 
 # same for 9 and 10 
-
-
-
-
 ```
 
 # 6. Try to answer these next questions without running similar code on real data.
@@ -147,11 +141,15 @@ What is the proportion in the assessment set for each fold?
 Use Monte Carlo CV to resample the training data with 20 resamples and .30 of each resample reserved for the assessment sets.
 
 ```{r monte carlo}
+# Running the monte carlo resampling with 20 resamples and .30 prop in assessment/.70 in analysis
+df_mc <- mc_cv(df, prop = 7/10, times = 20)
+df_mc
 
+# Checking this proportion is correct in split 1, by making sure .70 is in analysis and therefore .30 would be in assessment
+analysis(df_mc$splits[[1]]) %>%  nrow / nrow(df_mc$splits[[1]]$data)
 ```
 
 # 8. Common values after monte carlo
-
 Please demonstrate that that there are common values in the id column between Resample 8 & Resample 12, and Resample 2 & Resample 20in your MC CV object.(in the assesment sets)
 
 ```{r common values}
