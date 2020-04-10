@@ -40,13 +40,13 @@ Produce the class type for the initial split object and the training and test se
 ```{r initial split}
 
 df_split <- initial_split(df)
-str(df_split)
+class(df_split)
   
 df_train <- training(df_split)
-str(df_train)
+class(df_train)
 
 df_test <- testing(df_split)
-str(df_test)
+class(df_test)
 
 ```
 
@@ -66,7 +66,7 @@ df_test %>%
 
 # 3. k-fold cross-validation
 
-Use 10-fold cross-validation to resample the traning data.
+Use 10-fold cross-validation to resample the training data.
 
 ```{r kfold}
 
@@ -105,8 +105,6 @@ kfold_commonvalues
 Please demonstrate that that there are no common values in the id column between Fold01 & Fold02, and Fold09 & Fold10 in your 10-fold cross-validation object.(in the Assessment data)
 
 ```{r no common values}
-#setdiff()
-#typeunique
 
 kfold_assess <- kfold_commonvalues %>% 
   select(assessment)
@@ -114,7 +112,7 @@ kfold_assess <- kfold_commonvalues %>%
 dif_12 <- setdiff(kfold_assess$assessment$`1`[1],kfold_assess$assessment$`2`[1])
 dif_12
 
-# length in dif_12 and in assessment_n are equal, meaning that they ar eall different 
+# length in dif_12 and in assessment_n are equal, meaning that they are all different 
 
 dif_910 <- setdiff(kfold_assess$assessment$`9`[1],kfold_assess$assessment$`10`[1])
 dif_910
@@ -129,12 +127,10 @@ For the following code vfold_cv(fictional_train, v = 20):
 What is the proportion in the analysis set for each fold?
 
 1/20 = 5%
+
 What is the proportion in the assessment set for each fold?
 
-
-```{r}
-
-```
+95% 
 
 # 7.Monte Carlo
 
@@ -150,18 +146,68 @@ analysis(df_mc$splits[[1]]) %>%  nrow / nrow(df_mc$splits[[1]]$data)
 ```
 
 # 8. Common values after monte carlo
-Please demonstrate that that there are common values in the id column between Resample 8 & Resample 12, and Resample 2 & Resample 20in your MC CV object.(in the assesment sets)
+Please demonstrate that that there are common values in the id column between Resample 8 & Resample 12, and Resample 2 & Resample 20 in your MC CV object.(in the assesment sets)
 
 ```{r common values}
+
+assess_8 <- assessment(df_mc$splits[[8]]) %>% 
+            select(id)
+
+assess_12 <- assessment(df_mc$splits[[12]]) %>% 
+            select(id)
+
+dif_8_12 <- setdiff(assess_8, assess_12)
+
+dif_8_12
+
+#39,781 are unique and the full N is 56,827 displaying there is overlap. 
+
+assess_2 <- assessment(df_mc$splits[[2]]) %>% 
+            select(id)
+
+assess_20 <- assessment(df_mc$splits[[20]]) %>% 
+            select(id)
+
+dif_2_20 <- setdiff(assess_2, assess_20)
+
+dif_2_20
+
+# 39,662 are unique, which means there is some overlap in the different resamples 
 
 ```
 
 # 9. Bootstrap
 
 You plan on doing bootstrap resampling with a training set with n = 500.
+
 What is the sample size of an analysis set for a given bootstrap resample?
+
+It is 100%, so 500.  
+
+
 What is the sample size of an assessment set for a given bootstrap resample?
 
+It would be around 37% (of the training set), which is 185.
+
 If each row was selected only once for an analysis set:
-what would be the size of the analysis set?
+what would be the size of the analysis set? 
+
+roughly 63% of the training set, so 315
+
 and what would be the size of the assessment set?
+
+185.
+
+### Trying out bootstrapping 
+
+```{r}
+boot_splits <- bootstraps(df)
+
+nrow(df)
+
+boot_splits$splits[[1]]
+
+boot_splits$splits[[25]]
+
+```
+
